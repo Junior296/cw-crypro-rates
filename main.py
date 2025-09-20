@@ -49,11 +49,10 @@ async def get_coinbase_candles(product="BTC-USD", granularity=300):
     product: e.g., "BTC-USD", "ETH-USD"
     granularity: interval in seconds (e.g., 300 = 5 minutes)
     """
-    url = f"https://api.exchange.coinbase.com/products/{product}/candles"
-    params = {"granularity": granularity}
-
+    url = f"https://api.exchange.coinbase.com/products/{product}/candles?granularity={granularity}"
+    
     async with httpx.AsyncClient() as client:
-        response = await client.get(url, params=params)
+        response = await client.get(url)
         data = response.json()
 
     # Coinbase returns [time, low, high, open, close, volume]
