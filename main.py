@@ -39,7 +39,7 @@ async def get_coin_price_coingecko(symbol="bitcoin"):
 
 # ------------------- TIMESTAMP UTILITY -------------------
 
-def readable_time(time_stamp):
+def readable_time(timestamp):
     return datetime.datetime.fromtimestamp(timestamp).strftime("%Y-%m-%d %H:%M:%S")
     
 # ------------------- COINGECKO CANDLES -------------------
