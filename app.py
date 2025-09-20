@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify
-from main import get_current_usd_to_ugx, get_coin_price_coingecko, get_coingecko_candles
+from main import get_current_usd_to_ugx, get_coin_price_coingecko, get_coinbase_candles
 
 app = Flask(__name__)
 
@@ -16,10 +16,13 @@ async def get_ugx_rate():
 @app.route("/get/coin/data/", methods=["POST"])
 async def get_coin_data():
     try:
-        symbol = request.json.get("symbol", "bitcoin")
-        days = request.json.get("days", 1)  # default: last 1 day
-        coin_data = await get_coingecko_candles(symbol, "usd", days)
-        return jsonify(coin_data)
+        # Get symbol like "BTC-USD" or default to "BTC-USD"
+        symbol = request.json.get("symbol", "BTC-USD")
+        # granularity in seconds, default 5-minute candles
+        granularity = request.json.get("granularity", 300)
+
+        coin_data = await get_coinbase_candles(product=symbol, granularity=granularity)
+        return jsonify(coin_data[:5])  # return last 5 candles
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
