@@ -47,28 +47,28 @@ def readable_time(time_stamp):
 
 # ------------------- COINGECKO CANDLES -------------------
 
-async def get_coingecko_candles(symbol="bitcoin", vs_currency="usd", days=1):
+async def get_coinbase_candles(product="BTC-USD", granularity=300):
     """
-    Get OHLC candlestick data from CoinGecko.
-    symbol: "bitcoin", "ethereum", etc.
-    vs_currency: "usd", "ugx", etc.
-    days: 1, 7, 30, "max"
+    Fetch recent candlestick data from Coinbase.
+    product: e.g., "BTC-USD", "ETH-USD"
+    granularity: interval in seconds (e.g., 300 = 5 minutes)
     """
-    url = f"https://api.coingecko.com/api/v3/coins/{symbol}/ohlc"
-    params = {"vs_currency": vs_currency, "days": days}
+    url = f"https://api.exchange.coinbase.com/products/{product}/candles"
+    params = {"granularity": granularity}
 
     async with httpx.AsyncClient() as client:
         response = await client.get(url, params=params)
+        data = response.json()
 
-    data = response.json()
-
+    # Coinbase returns [time, low, high, open, close, volume]
     candles = [
         {
-            "open_time": readable_time(c[0]),
-            "open": c[1],
+            "open_time": readable_time_from_seconds(c[0]),
+            "open": c[3],
             "high": c[2],
-            "low": c[3],
-            "close": c[4]
+            "low": c[1],
+            "close": c[4],
+            "volume": c[5]
         }
         for c in data
     ]
