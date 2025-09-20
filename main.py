@@ -63,7 +63,7 @@ async def get_coinbase_candles(product="BTC-USD", granularity=300):
     # Coinbase returns [time, low, high, open, close, volume]
     candles = [
         {
-            "open_time": readable_time_from_seconds(c[0]),
+            "open_time": readable_time(c[0]),
             "open": c[3],
             "high": c[2],
             "low": c[1],
