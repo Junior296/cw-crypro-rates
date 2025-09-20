@@ -36,8 +36,11 @@ async def get_coin_price(symbol):
         return float(data["price"])
 
 def readable_time(time_stamp):
-    return datetime.datetime.fromtimestamp(time_stamp / 1000).strftime("%Y-%m-%d %H:%M:%S")
-
+    """
+    Convert a timestamp in milliseconds (string or int) to human-readable datetime.
+    """
+    ts = int(time_stamp)  # ensure it's an int
+    return datetime.datetime.fromtimestamp(ts / 1000).strftime("%Y-%m-%d %H:%M:%S")
 
 async def get_coin_trend(symbol, limit):
     url = "https://api.binance.com/api/v3/klines"
@@ -48,23 +51,21 @@ async def get_coin_trend(symbol, limit):
     }
 
     async with httpx.AsyncClient() as client:
-
         response = await client.get(url, params=params)
         data = response.json()
 
         candlesticks_data = {}
 
         for index, candlestick in enumerate(data):
-           candlestick_data = {
-               "open_time": readable_time(candlestick[0]),
-               "open_price": candlestick[1],
-               "close_time": readable_time(candlestick[6]),
-               "close_price": candlestick[4]
-           }
-           candlesticks_data[index] = candlestick_data
+            candlestick_data = {
+                "open_time": readable_time(candlestick[0]),
+                "open_price": candlestick[1],
+                "close_time": readable_time(candlestick[6]),
+                "close_price": candlestick[4]
+            }
+            candlesticks_data[index] = candlestick_data
 
         return candlesticks_data
-
 # currency_data = [1758364980000, '115779.99000000', '115780.00000000', '115779.99000000', '115780.00000000', '1.14482000', 1758365039999, '132547.25326390', 184, '0.51121000', '59187.89380000', '0']
 #               Open time(ms) ,    Open price,      High price,         Low price,         Close price       BTC traded,    Close time(ms),   USDT traded,    No.trades BTC bought,  USDT spent  Ignore: 0 (not used)
 # Each array inside is one candlestick (1 minute, 5 minutes, etc., depending on the interval you requested).
