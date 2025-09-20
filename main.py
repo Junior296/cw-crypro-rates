@@ -9,7 +9,7 @@ async def get_current_usd_to_ugx():
     url = "https://wise.com/gb/currency-converter/usd-to-ugx-rate"
     headers = {"User-Agent": "Mozilla/5.0"}
 
-    async with httpx.AsyncClient(proxy="http://192.168.43.1:8080") as client:
+    async with httpx.AsyncClient() as client:
         response = await client.get(url, headers=headers)
 
     if response.status_code != 200:
@@ -30,7 +30,7 @@ async def get_current_usd_to_ugx():
 async def get_coin_price_coingecko(symbol="bitcoin"):
     url = f"https://api.coingecko.com/api/v3/simple/price?ids={symbol}&vs_currencies=usd"
 
-    async with httpx.AsyncClient(proxy="http://192.168.43.1:8080") as client:
+    async with httpx.AsyncClient() as client:
         response = await client.get(url)
 
     data = response.json()
@@ -57,7 +57,7 @@ async def get_coingecko_candles(symbol="bitcoin", vs_currency="usd", days=1):
     url = f"https://api.coingecko.com/api/v3/coins/{symbol}/ohlc"
     params = {"vs_currency": vs_currency, "days": days}
 
-    async with httpx.AsyncClient(proxy="http://192.168.43.1:8080") as client:
+    async with httpx.AsyncClient() as client:
         response = await client.get(url, params=params)
 
     data = response.json()
