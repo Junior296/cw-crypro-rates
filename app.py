@@ -29,5 +29,5 @@ async def get_coin_price_usd():
 
 
 if __name__ == "__main__":
-    app.debug = True
+    app.debug = False
     app.run()
