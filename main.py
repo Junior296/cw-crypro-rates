@@ -39,8 +39,8 @@ async def get_coin_price_coingecko(symbol="bitcoin"):
 
 # ------------------- TIMESTAMP UTILITY -------------------
 
-def readable_time_from_seconds(ts):
-    return datetime.datetime.utcfromtimestamp(ts).strftime("%Y-%m-%d %H:%M:%S")
+def readable_time(time_stamp):
+    return datetime.datetime.fromtimestamp(timestamp).strftime("%Y-%m-%d %H:%M:%S")
     
 # ------------------- COINGECKO CANDLES -------------------
 
@@ -59,7 +59,7 @@ async def get_coinbase_candles(product="BTC-USD", granularity=300):
     # Coinbase returns [time, low, high, open, close, volume]
     candles = [
         {
-            "open_time": c[0],
+            "open_time": readable_time(c[0]),
             "open": c[3],
             "high": c[2],
             "low": c[1],
