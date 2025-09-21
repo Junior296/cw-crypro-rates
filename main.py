@@ -44,7 +44,7 @@ def readable_time(timestamp):
     
 # ------------------- COINGECKO CANDLES -------------------
 
-async def get_coinbase_candles(product="BTC-USD", granularity=300):
+async def get_coinbase_candles(product, granularity):
     """
     Fetch recent candlestick data from Coinbase.
     product: e.g., "BTC-USD", "ETH-USD"
