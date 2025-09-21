@@ -22,7 +22,7 @@ async def get_coin_data():
         granularity = request.json.get("granularity")
 
         coin_data = await get_coinbase_candles(product=symbol, granularity=granularity)
-        return jsonify(coin_data[:20])  # return last 5 candles
+        return jsonify(coin_data[:5])  # return last 5 candles
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
