@@ -17,9 +17,9 @@ async def get_ugx_rate():
 async def get_coin_data():
     try:
         # Get symbol like "BTC-USD" or default to "BTC-USD"
-        symbol = request.json.get("symbol", "BTC-USD")
+        symbol = request.json.get("symbol")
         # granularity in seconds, default 5-minute candles
-        granularity = request.json.get("granularity", 300)
+        granularity = request.json.get("granularity")
 
         coin_data = await get_coinbase_candles(product=symbol, granularity=granularity)
         return jsonify(coin_data[:5])  # return last 5 candles
